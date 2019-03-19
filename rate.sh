@@ -9,7 +9,10 @@ if [ -n "$1"]; then
 
 	select selection in $ITEM_LIST
 	do
-	  if [ $selection ]; then
+	  if [ $REPLY -gt 24 ]; then
+		curl $url | jq-win64.exe
+	    break
+	  elif [ $selection ]; then
 		curl $url | jq-win64.exe ".[] | .[$(($REPLY-1))] | .bid"
 	    break
 	  else
@@ -28,6 +31,3 @@ fi
 
 # sleep 60
 # done
-
-
-
