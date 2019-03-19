@@ -9,6 +9,7 @@ else
 	$index=$name
 fi
 
+# https://stedolan.github.io/jq/ jqをインストールする
 # 0 "GBPNZD"
 # 1 "CADJPY"
 # 2 "GBPAUD"
