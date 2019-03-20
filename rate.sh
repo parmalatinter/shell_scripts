@@ -7,9 +7,15 @@ rate=""
 # 受け側のURL
 url="https://www.gaitameonline.com/rateaj/getrate"
 
-if [ -n "$1" ]; then
+if [ $1 ]; then
+	rate=$(curl $url | jq-win64.exe ".[] | .[$(($1-1))] | .bid")
+else
 
-	if [ -n "$pairNo" ]; then
+	if [ $pairNo ]; then
+
+		rate=$(curl $url | jq-win64.exe ".[] | .[$(($pairNo-1))] | .bid")
+
+	else
 
 		ITEM_LIST="GBPNZD CADJPY GBPAUD AUDJPY AUDNZD EURCAD EURUSD NZDJPY USDCAD EURGBP GBPUSD ZARJPY EURCHF CHFJPY AUDUSD USDCHF EURJPY GBPCHF EURNZD NZDUSD USDJPY EURAUD AUDCHF GBPJPY"
 
@@ -25,21 +31,18 @@ if [ -n "$1" ]; then
 		    echo "invalid selection."
 		  fi
 		done
-	else
-		rate=$(curl $url | jq-win64.exe ".[] | .[$(($pairNo-1))] | .bid")
 	fi
-else
-	rate=$(curl $url | jq-win64.exe ".[] | .[$(($1-1))] | .bid")
+
 fi
 
 
 rate_float=`echo $rate | bc`
 
-c=`echo "scale=5;((  $entry - $rate_float ) * 100 )" | bc`
+c=`echo "scale=5;((  $entry - $rate_float ) * 10000 )" | bc`
 
 x=`echo "scale=5;((  $entry - $rate_float ) * $amount * $every * $doller )" | bc`
 
-echo $rate_float
+echo "r = $rate_float"
 echo "c = $c"
 echo "p = $x"
 
