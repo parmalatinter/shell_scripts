@@ -5,7 +5,7 @@
 rate=""
 
 # 受け側のURL
-url="https://ratesapi.io/api/latest?base=TRY"
+url="https://forex.1forge.com/1.0.3/quotes?pairs=TRYJPY&api_key=8Xjc3U4fQaJRriRmtPgAkBbEjaMK94Bb"
 
 if [ $1 ]; then
 	rate=$(curl $url | jq-win64.exe ".base | .[] | .[$(($1-1))] | .bid")
@@ -13,7 +13,7 @@ else
 
 	if [ $pairNo ]; then
 
-		rate=$(curl $url | jq-win64.exe ".rates | .JPY")
+		rate=$(curl $url | jq-win64.exe ".[0] | .bid")
 
 	else
 
@@ -25,7 +25,7 @@ else
 			curl $url | jq-win64.exe
 		    break
 		  elif [ $selection ]; then
-			rate=$(curl $url | jq-win64.exe ".rates | .JPY")
+			rate=$(curl $url | jq-win64.exe ".[0] | .bid")
 		    break
 		  else
 		    echo "invalid selection."
@@ -39,7 +39,7 @@ fi
 rate_float=`echo $rate | bc`
 
 echo $rate
-c=`echo "scale=5;((  $rate_float  - 0.56))" | bc`
+c=`echo "scale=5;((  $rate_float  - 0.03))" | bc`
 
 echo "c = $c"
 
